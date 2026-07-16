@@ -77,7 +77,12 @@ We use **Cubit** (from `flutter_bloc`) so UI stays free of business logic.
 
 - `go_router` — navigation + auth redirects
 - `flutter_bloc` + `equatable` — state management
-- `google_fonts` — Inter typography
+- `google_fonts` — **Poppins** typography (app-wide)
+
+## Brand assets
+
+- Logo: `assets/kivu-logo.png` (via `AppAssets.logo` / `KivuLogo` widget)
+- Font: Poppins through `AppTheme` (`ThemeData.fontFamily`)
 
 ## Tests
 

@@ -2,13 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
 
+/// App-wide typography uses Poppins (matches the Figma sans-serif look).
 abstract final class AppTheme {
+  static String get fontFamily => GoogleFonts.poppins().fontFamily!;
+
   static ThemeData get light {
-    final textTheme = GoogleFonts.interTextTheme();
+    final textTheme = GoogleFonts.poppinsTextTheme().apply(
+      bodyColor: AppColors.textPrimary,
+      displayColor: AppColors.textPrimary,
+    );
 
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
+      fontFamily: fontFamily,
       scaffoldBackgroundColor: AppColors.background,
       colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
@@ -65,7 +72,7 @@ abstract final class AppTheme {
         scrolledUnderElevation: 0,
         backgroundColor: AppColors.background,
         foregroundColor: AppColors.textPrimary,
-        titleTextStyle: GoogleFonts.inter(
+        titleTextStyle: GoogleFonts.poppins(
           color: AppColors.primary,
           fontWeight: FontWeight.w700,
           fontSize: 20,
@@ -88,7 +95,7 @@ abstract final class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: GoogleFonts.inter(
+          textStyle: GoogleFonts.poppins(
             fontWeight: FontWeight.w600,
             fontSize: 16,
           ),
@@ -102,7 +109,7 @@ abstract final class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          textStyle: GoogleFonts.inter(
+          textStyle: GoogleFonts.poppins(
             fontWeight: FontWeight.w500,
             fontSize: 14,
           ),
@@ -124,7 +131,7 @@ abstract final class AppTheme {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
         ),
-        hintStyle: GoogleFonts.inter(
+        hintStyle: GoogleFonts.poppins(
           color: AppColors.textMuted,
           fontSize: 14,
         ),
