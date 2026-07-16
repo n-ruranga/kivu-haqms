@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
 import 'package:kivu_haqms/core/constants/app_routes.dart';
 import 'package:kivu_haqms/core/constants/app_strings.dart';
 import 'package:kivu_haqms/core/widgets/kivu_logo.dart';
+import 'package:kivu_haqms/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:kivu_haqms/features/auth/presentation/cubit/auth_state.dart';
 import 'package:kivu_haqms/features/home/presentation/widgets/quick_consultation_card.dart';
 import 'package:kivu_haqms/features/home/presentation/widgets/queue_status_card.dart';
 import 'package:kivu_haqms/features/home/presentation/widgets/upcoming_appointment_card.dart';
@@ -110,22 +113,28 @@ class _HomeHeader extends StatelessWidget {
 class _GreetingSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          AppStrings.welcomeBack,
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: AppColors.textSecondary,
-                letterSpacing: 1.5,
-              ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          'Hello, Jean',
-          style: Theme.of(context).textTheme.headlineLarge,
-        ),
-      ],
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) {
+        final name = state is AuthAuthenticated ? state.user.displayName : 'there';
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              AppStrings.welcomeBack,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    letterSpacing: 1.5,
+                  ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Hello, $name',
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
+          ],
+        );
+      },
     );
   }
 }

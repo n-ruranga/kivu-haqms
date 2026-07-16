@@ -16,23 +16,26 @@ Flutter mobile app for booking hospital appointments and tracking queue status i
 
 ```
 lib/
-├── main.dart                 # Entry point
-├── app.dart                  # MaterialApp + theme + router
+├── main.dart
+├── app.dart                          # BlocProvider + MaterialApp.router
 ├── core/
-│   ├── constants/            # Colors, strings, route paths
-│   ├── router/               # GoRouter configuration
-│   ├── theme/                # AppTheme (Inter font, KIVU colors)
-│   └── widgets/              # Shared widgets (logo, bottom nav, placeholders)
+│   ├── constants/
+│   ├── router/                       # GoRouter + auth redirects
+│   ├── theme/
+│   └── widgets/
 └── features/
-    ├── auth/presentation/pages/       # Duke
-    ├── home/presentation/             # Jabes
-    ├── schedule/presentation/pages/     # Naillah
-    ├── doctors/presentation/pages/      # Kethia
-    ├── profile/presentation/pages/      # Naillah
-    └── shell/presentation/pages/        # Bottom-nav shell
+    ├── auth/
+    │   ├── domain/                   # UserEntity + AuthRepository contract
+    │   ├── data/                     # StubAuthRepository (Duke → Firebase)
+    │   └── presentation/
+    │       ├── cubit/                # AuthCubit + AuthState
+    │       └── pages/                # Login, OTP, Sign up
+    ├── home/                         # Dashboard (Jabes)
+    ├── schedule/                     # Naillah — domain/ + data/ ready
+    ├── doctors/                      # Kethia — domain/ + data/ ready
+    ├── profile/                      # Naillah — domain/ + data/ ready
+    └── shell/
 ```
-
-Each feature follows **clean architecture** folders. Add `domain/` and `data/` subfolders inside your feature as you connect Firebase.
 
 ## Getting started
 
@@ -41,19 +44,44 @@ flutter pub get
 flutter run
 ```
 
-## Navigation flow (current)
+## Navigation flow
 
-1. **Login** → placeholder (Duke)
-2. **Verify OTP** → placeholder (Duke)
-3. **Home** → dashboard with bottom navigation
-4. Tabs: Home · Schedule · Doctors · Profile
+1. **Login** → Continue → **OTP**
+2. **Verify & Login** → `AuthCubit.completeDemoLogin()` → redirect to **Home**
+3. Tabs: Home · Schedule · Doctors · Profile
+4. **Profile → Sign out** → redirect back to Login
 
-## State management
+Auth redirects are handled in `AppRouter` — pages do not call `context.go('/home')` after login.
 
-[BLoC](https://pub.dev/packages/flutter_bloc) is included. Add Cubits/Blocs inside each feature's `presentation/` folder as you connect Firebase.
+## State management (BLoC / Cubit)
+
+We use **Cubit** (from `flutter_bloc`) so UI stays free of business logic.
+
+| Layer | Responsibility | Example |
+|-------|----------------|---------|
+| `presentation/` | Cubits + pages/widgets | `AuthCubit` |
+| `domain/` | Entities + repository interfaces | `AuthRepository` |
+| `data/` | Implementations (Firebase later) | `StubAuthRepository` |
+
+**Pattern for teammates:**
+
+1. Define entity + repository interface in `domain/`
+2. Implement repository in `data/`
+3. Create Cubit in `presentation/cubit/`
+4. Provide Cubit via `BlocProvider` (or read existing ones with `context.read`)
+5. Rebuild UI with `BlocBuilder` / listen with `BlocListener`
+
+**Duke:** replace `StubAuthRepository` in `app.dart` with a Firebase implementation of `AuthRepository`. Keep `AuthCubit` methods; add email/password + Google methods as needed.
 
 ## Dependencies
 
-- `go_router` — navigation
+- `go_router` — navigation + auth redirects
 - `flutter_bloc` + `equatable` — state management
 - `google_fonts` — Inter typography
+
+## Tests
+
+```bash
+flutter test
+flutter analyze
+```
