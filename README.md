@@ -81,7 +81,7 @@ We use **Cubit** (from `flutter_bloc`) so UI stays free of business logic.
 
 ## Brand assets
 
-- Logo: `assets/kivu-logo.png` (via `AppAssets.logo` / `KivuLogo` widget)
+- Logo: `assets/images/kivu-logo.png` (via `AppAssets.logo` / `KivuLogo` widget)
 - Font: Poppins through `AppTheme` (`ThemeData.fontFamily`)
 
 ## Tests

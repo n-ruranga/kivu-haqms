@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 /// KIVU brand colors matching the Figma prototype and logo.
 abstract final class AppColors {
-  /// Matches `assets/kivu-logo.png` blue.
+  /// Matches `assets/images/kivu-logo.png` blue.
   static const Color primary = Color(0xFF2E66F6);
   static const Color primaryDark = Color(0xFF1E4FD6);
   static const Color primaryLight = Color(0xFFE8F0FE);
