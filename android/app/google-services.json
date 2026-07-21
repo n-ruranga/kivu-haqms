@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "550387847113",
+    "project_id": "kivu-haqms",
+    "storage_bucket": "kivu-haqms.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:550387847113:android:0c17dcca138a3a1dd12218",
+        "android_client_info": {
+          "package_name": "com.example.kivu_haqms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "550387847113-h2gbu5ncp3g5i1c3qjpjjkg3vur6hr6e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLNwpJa0X1PckR6_pLb0io22oXOIcWbAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "550387847113-h2gbu5ncp3g5i1c3qjpjjkg3vur6hr6e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

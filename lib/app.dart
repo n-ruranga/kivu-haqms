@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kivu_haqms/core/router/app_router.dart';
 import 'package:kivu_haqms/core/theme/app_theme.dart';
-import 'package:kivu_haqms/features/auth/data/repositories/stub_auth_repository.dart';
+import 'package:kivu_haqms/features/auth/data/repositories/firebase_auth_repository.dart';
 import 'package:kivu_haqms/features/auth/domain/repositories/auth_repository.dart';
 import 'package:kivu_haqms/features/auth/presentation/cubit/auth_cubit.dart';
 
@@ -23,7 +23,7 @@ class _KivuAppState extends State<KivuApp> {
   void initState() {
     super.initState();
     // Duke: swap StubAuthRepository for FirebaseAuthRepository.
-    _authRepository = StubAuthRepository();
+    _authRepository = FirebaseAuthRepository();
     _authCubit = AuthCubit(_authRepository);
     _router = AppRouter.create(_authCubit);
   }
