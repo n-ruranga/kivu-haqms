@@ -5,8 +5,8 @@ import 'package:kivu_haqms/core/router/go_router_refresh_stream.dart';
 import 'package:kivu_haqms/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:kivu_haqms/features/auth/presentation/cubit/auth_state.dart';
 import 'package:kivu_haqms/features/auth/presentation/pages/login_page.dart';
-import 'package:kivu_haqms/features/auth/presentation/pages/otp_verification_page.dart';
 import 'package:kivu_haqms/features/auth/presentation/pages/sign_up_page.dart';
+import 'package:kivu_haqms/features/auth/presentation/pages/splash_page.dart';
 import 'package:kivu_haqms/features/doctors/presentation/pages/book_appointment_page.dart';
 import 'package:kivu_haqms/features/doctors/presentation/pages/booking_confirmation_page.dart';
 import 'package:kivu_haqms/features/doctors/presentation/pages/find_doctor_page.dart';
@@ -23,18 +23,17 @@ abstract final class AppRouter {
   static GoRouter create(AuthCubit authCubit) {
     return GoRouter(
       navigatorKey: rootNavigatorKey,
-      initialLocation: AppRoutes.login,
+      initialLocation: AppRoutes.splash,
       refreshListenable: GoRouterRefreshStream(authCubit.stream),
       redirect: (context, state) {
         final authState = authCubit.state;
         final location = state.matchedLocation;
-        final isAuthRoute = location == AppRoutes.login ||
-            location == AppRoutes.otp ||
-            location == AppRoutes.signUp;
+        final isSplashRoute = location == AppRoutes.splash;
+        final isAuthRoute = location == AppRoutes.login || location == AppRoutes.signUp;
 
         // Still checking session — stay put.
         if (authState is AuthInitial || authState is AuthLoading) {
-          return null;
+          return isSplashRoute ? null : AppRoutes.splash;
         }
 
         final isLoggedIn = authState is AuthAuthenticated;
@@ -43,20 +42,24 @@ abstract final class AppRouter {
           return AppRoutes.login;
         }
 
-        if (isLoggedIn && isAuthRoute) {
+        if (isLoggedIn && (isAuthRoute || isSplashRoute)) {
           return AppRoutes.home;
+        }
+
+        if (isSplashRoute){
+          return AppRoutes.login;
         }
 
         return null;
       },
       routes: [
         GoRoute(
-          path: AppRoutes.login,
-          builder: (context, state) => const LoginPage(),
+          path: AppRoutes.splash,
+          builder: (context, state) => const SplashPage(),
         ),
         GoRoute(
-          path: AppRoutes.otp,
-          builder: (context, state) => const OtpVerificationPage(),
+          path: AppRoutes.login,
+          builder: (context, state) => const LoginPage(),
         ),
         GoRoute(
           path: AppRoutes.signUp,

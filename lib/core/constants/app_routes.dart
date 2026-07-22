@@ -1,8 +1,8 @@
 /// Named route paths for GoRouter.
 abstract final class AppRoutes {
   // Auth — owner: Duke
+  static const String splash = '/splash';
   static const String login = '/login';
-  static const String otp = '/otp';
   static const String signUp = '/sign-up';
 
   // Main shell tabs
