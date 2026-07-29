@@ -101,7 +101,7 @@ void main() {
     );
 
     blocTest<AuthCubit, AuthState>(
-      'emits [AuthLoading, AuthUnauthenticated] on signOut',
+      'emits [AuthUnauthenticated] on signOut',
       setUp: () {
         when(() => mockRepository.signOut()).thenAnswer((_) async {});
       },
@@ -111,10 +111,7 @@ void main() {
         autoCheckAuthStatus: false,
       ),
       act: (cubit) => cubit.signOut(),
-      expect: () => [
-        const AuthLoading(),
-        const AuthUnauthenticated(),
-      ],
+      expect: () => [const AuthUnauthenticated()],
     );
   });
 }

@@ -12,6 +12,7 @@ import 'package:kivu_haqms/features/appointments/presentation/pages/book_appoint
 import 'package:kivu_haqms/features/appointments/presentation/pages/booking_confirmation_page.dart';
 import 'package:kivu_haqms/features/doctors/presentation/pages/find_doctor_page.dart';
 import 'package:kivu_haqms/features/home/presentation/pages/home_page.dart';
+import 'package:kivu_haqms/features/profile/presentation/pages/edit_profile_page.dart';
 import 'package:kivu_haqms/features/profile/presentation/pages/profile_page.dart';
 import 'package:kivu_haqms/features/schedule/presentation/pages/queue_tracker_page.dart';
 import 'package:kivu_haqms/features/schedule/presentation/pages/schedule_page.dart';
@@ -32,13 +33,14 @@ abstract final class AppRouter {
         final isSplashRoute = location == AppRoutes.splash;
         final isAuthRoute = location == AppRoutes.login || location == AppRoutes.signUp;
 
-        // Still checking session — stay put.
-        if (authState is AuthInitial || authState is AuthLoading) {
+        // App startup — show splash while the first session check runs.
+        if (authState is AuthInitial) {
           return isSplashRoute ? null : AppRoutes.splash;
         }
 
         final isLoggedIn = authState is AuthAuthenticated;
 
+        // Signed out (or never signed in) — always land on login, not splash.
         if (!isLoggedIn && !isAuthRoute) {
           return AppRoutes.login;
         }
@@ -122,6 +124,11 @@ abstract final class AppRouter {
           path: AppRoutes.queueTracker,
           parentNavigatorKey: rootNavigatorKey,
           builder: (context, state) => const QueueTrackerPage(),
+        ),
+        GoRoute(
+          path: AppRoutes.profileEdit,
+          parentNavigatorKey: rootNavigatorKey,
+          builder: (context, state) => const EditProfilePage(),
         ),
       ],
     );
