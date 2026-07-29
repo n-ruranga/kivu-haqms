@@ -32,13 +32,14 @@ abstract final class AppRouter {
         final isSplashRoute = location == AppRoutes.splash;
         final isAuthRoute = location == AppRoutes.login || location == AppRoutes.signUp;
 
-        // Still checking session — stay put.
-        if (authState is AuthInitial || authState is AuthLoading) {
+        // App startup — show splash while the first session check runs.
+        if (authState is AuthInitial) {
           return isSplashRoute ? null : AppRoutes.splash;
         }
 
         final isLoggedIn = authState is AuthAuthenticated;
 
+        // Signed out (or never signed in) — always land on login, not splash.
         if (!isLoggedIn && !isAuthRoute) {
           return AppRoutes.login;
         }
