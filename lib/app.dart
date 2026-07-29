@@ -3,9 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kivu_haqms/core/router/app_router.dart';
 import 'package:kivu_haqms/core/theme/app_theme.dart';
+import 'package:kivu_haqms/features/appointments/data/repositories/firestore_appointment_repository.dart';
+import 'package:kivu_haqms/features/appointments/domain/repositories/appointment_repository.dart';
 import 'package:kivu_haqms/features/auth/data/repositories/firebase_auth_repository.dart';
 import 'package:kivu_haqms/features/auth/domain/repositories/auth_repository.dart';
 import 'package:kivu_haqms/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:kivu_haqms/features/doctors/data/repositories/firestore_doctor_repository.dart';
+import 'package:kivu_haqms/features/doctors/domain/repositories/doctor_repository.dart';
 import 'package:kivu_haqms/features/profile/data/repositories/firestore_profile_repository.dart';
 import 'package:kivu_haqms/features/profile/domain/repositories/profile_repository.dart';
 import 'package:kivu_haqms/features/profile/presentation/cubit/profile_cubit.dart';
@@ -19,6 +23,8 @@ class KivuApp extends StatefulWidget {
 
 class _KivuAppState extends State<KivuApp> {
   late final AuthRepository _authRepository;
+  late final DoctorRepository _doctorRepository;
+  late final AppointmentRepository _appointmentRepository;
   late final ProfileRepository _profileRepository;
   late final AuthCubit _authCubit;
   late final ProfileCubit _profileCubit;
@@ -28,6 +34,8 @@ class _KivuAppState extends State<KivuApp> {
   void initState() {
     super.initState();
     _authRepository = FirebaseAuthRepository();
+    _doctorRepository = FirestoreDoctorRepository();
+    _appointmentRepository = FirestoreAppointmentRepository();
     _profileRepository = FirestoreProfileRepository(
       authRepository: _authRepository,
     );
@@ -49,6 +57,10 @@ class _KivuAppState extends State<KivuApp> {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AuthRepository>.value(value: _authRepository),
+        RepositoryProvider<DoctorRepository>.value(value: _doctorRepository),
+        RepositoryProvider<AppointmentRepository>.value(
+          value: _appointmentRepository,
+        ),
         RepositoryProvider<ProfileRepository>.value(value: _profileRepository),
       ],
       child: MultiBlocProvider(

@@ -18,6 +18,29 @@ abstract final class AppStrings {
   static const String quickConsultations = 'Quick Consultations';
   static const String estimatedWait = 'Estimated wait';
 
+  // Appointment booking — Kethia
+  static const String bookAppointmentTitle = 'Book Appointment';
+  static const String chooseDepartment = 'Choose a department';
+  static const String chooseDoctor = 'Choose a doctor';
+  static const String chooseDate = 'Pick a date';
+  static const String chooseTime = 'Pick a time';
+  static const String reasonForVisit = 'Reason for visit';
+  static const String confirmBooking = 'Confirm booking';
+  static const String bookingConfirmed = 'Appointment requested';
+  static const String bookingConfirmedBody =
+      'Your request has been sent to the hospital. You will get a notification '
+      'once it is confirmed.';
+  static const String viewMyAppointments = 'View my appointments';
+  static const String backToHome = 'Back to home';
+  static const String myAppointments = 'My Appointments';
+  static const String upcoming = 'Upcoming';
+  static const String pastAppointments = 'Past';
+  static const String noAppointments = 'No appointments yet';
+  static const String noAppointmentsBody =
+      'Book your first appointment and it will show up here.';
+  static const String cancelAppointment = 'Cancel';
+  static const String rescheduleAppointment = 'Reschedule';
+
   // Navigation
   static const String navHome = 'Home';
   static const String navSchedule = 'Schedule';
