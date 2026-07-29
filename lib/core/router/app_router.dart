@@ -7,8 +7,9 @@ import 'package:kivu_haqms/features/auth/presentation/cubit/auth_state.dart';
 import 'package:kivu_haqms/features/auth/presentation/pages/login_page.dart';
 import 'package:kivu_haqms/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:kivu_haqms/features/auth/presentation/pages/splash_page.dart';
-import 'package:kivu_haqms/features/doctors/presentation/pages/book_appointment_page.dart';
-import 'package:kivu_haqms/features/doctors/presentation/pages/booking_confirmation_page.dart';
+import 'package:kivu_haqms/features/appointments/domain/entities/appointment_entity.dart';
+import 'package:kivu_haqms/features/appointments/presentation/pages/book_appointment_page.dart';
+import 'package:kivu_haqms/features/appointments/presentation/pages/booking_confirmation_page.dart';
 import 'package:kivu_haqms/features/doctors/presentation/pages/find_doctor_page.dart';
 import 'package:kivu_haqms/features/home/presentation/pages/home_page.dart';
 import 'package:kivu_haqms/features/profile/presentation/pages/profile_page.dart';
@@ -112,7 +113,10 @@ abstract final class AppRouter {
         GoRoute(
           path: AppRoutes.bookingConfirmation,
           parentNavigatorKey: rootNavigatorKey,
-          builder: (context, state) => const BookingConfirmationPage(),
+          // The freshly created appointment is handed over via `extra`.
+          builder: (context, state) => BookingConfirmationPage(
+            appointment: state.extra as AppointmentEntity?,
+          ),
         ),
         GoRoute(
           path: AppRoutes.queueTracker,
