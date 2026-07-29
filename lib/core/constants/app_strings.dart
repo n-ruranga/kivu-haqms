@@ -23,4 +23,42 @@ abstract final class AppStrings {
   static const String navSchedule = 'Schedule';
   static const String navDoctors = 'Doctors';
   static const String navProfile = 'Profile';
+
+  // Profile
+  static const String profileTitle = 'Profile';
+  static const String editProfile = 'Edit';
+  static const String editProfileSubtitle =
+      'Update your personal details and emergency contact.';
+  static const String personalInfo = 'Personal information';
+  static const String preferences = 'Preferences';
+  static const String account = 'Account';
+  static const String phoneNumber = 'Phone number';
+  static const String dateOfBirth = 'Date of birth';
+  static const String emergencyContact = 'Emergency contact';
+  static const String emergencyContactName = 'Contact name';
+  static const String emergencyContactPhone = 'Contact phone';
+  static const String pushNotifications = 'Push notifications';
+  static const String pushNotificationsDesc =
+      'Receive alerts about queue updates and appointments.';
+  static const String appointmentReminders = 'Appointment reminders';
+  static const String appointmentRemindersDesc =
+      'Get reminded before your upcoming appointments.';
+  static const String resetPassword = 'Reset password';
+  static const String resetPasswordDesc =
+      'Send a password reset link to your email.';
+  static const String signOut = 'Sign out';
+  static const String notProvided = 'Not provided';
+  static const String profileLoadError = 'Could not load your profile.';
+  static const String tryAgain = 'Try again';
+  static const String fullName = 'Full name';
+  static const String fullNameRequired = 'Enter your full name';
+  static const String email = 'Email';
+  static const String emailReadOnly = 'Email cannot be changed here.';
+  static const String selectDate = 'Select date';
+  static const String clearDate = 'Clear date';
+  static const String saveChanges = 'Save changes';
+  static const String profileUpdated = 'Profile updated successfully.';
+
+  static String resetPasswordSent(String email) =>
+      'Password reset link sent to $email.';
 }

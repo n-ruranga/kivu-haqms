@@ -11,6 +11,7 @@ import 'package:kivu_haqms/features/doctors/presentation/pages/book_appointment_
 import 'package:kivu_haqms/features/doctors/presentation/pages/booking_confirmation_page.dart';
 import 'package:kivu_haqms/features/doctors/presentation/pages/find_doctor_page.dart';
 import 'package:kivu_haqms/features/home/presentation/pages/home_page.dart';
+import 'package:kivu_haqms/features/profile/presentation/pages/edit_profile_page.dart';
 import 'package:kivu_haqms/features/profile/presentation/pages/profile_page.dart';
 import 'package:kivu_haqms/features/schedule/presentation/pages/queue_tracker_page.dart';
 import 'package:kivu_haqms/features/schedule/presentation/pages/schedule_page.dart';
@@ -118,6 +119,11 @@ abstract final class AppRouter {
           path: AppRoutes.queueTracker,
           parentNavigatorKey: rootNavigatorKey,
           builder: (context, state) => const QueueTrackerPage(),
+        ),
+        GoRoute(
+          path: AppRoutes.profileEdit,
+          parentNavigatorKey: rootNavigatorKey,
+          builder: (context, state) => const EditProfilePage(),
         ),
       ],
     );

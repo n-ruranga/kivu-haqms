@@ -6,6 +6,9 @@ import 'package:kivu_haqms/core/theme/app_theme.dart';
 import 'package:kivu_haqms/features/auth/data/repositories/firebase_auth_repository.dart';
 import 'package:kivu_haqms/features/auth/domain/repositories/auth_repository.dart';
 import 'package:kivu_haqms/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:kivu_haqms/features/profile/data/repositories/firestore_profile_repository.dart';
+import 'package:kivu_haqms/features/profile/domain/repositories/profile_repository.dart';
+import 'package:kivu_haqms/features/profile/presentation/cubit/profile_cubit.dart';
 
 class KivuApp extends StatefulWidget {
   const KivuApp({super.key});
@@ -16,20 +19,26 @@ class KivuApp extends StatefulWidget {
 
 class _KivuAppState extends State<KivuApp> {
   late final AuthRepository _authRepository;
+  late final ProfileRepository _profileRepository;
   late final AuthCubit _authCubit;
+  late final ProfileCubit _profileCubit;
   late final GoRouter _router;
 
   @override
   void initState() {
     super.initState();
-    // Duke: swap StubAuthRepository for FirebaseAuthRepository.
     _authRepository = FirebaseAuthRepository();
+    _profileRepository = FirestoreProfileRepository(
+      authRepository: _authRepository,
+    );
     _authCubit = AuthCubit(_authRepository);
+    _profileCubit = ProfileCubit(_profileRepository);
     _router = AppRouter.create(_authCubit);
   }
 
   @override
   void dispose() {
+    _profileCubit.close();
     _authCubit.close();
     _router.dispose();
     super.dispose();
@@ -37,10 +46,16 @@ class _KivuAppState extends State<KivuApp> {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider<AuthRepository>.value(
-      value: _authRepository,
-      child: BlocProvider<AuthCubit>.value(
-        value: _authCubit,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<AuthRepository>.value(value: _authRepository),
+        RepositoryProvider<ProfileRepository>.value(value: _profileRepository),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthCubit>.value(value: _authCubit),
+          BlocProvider<ProfileCubit>.value(value: _profileCubit),
+        ],
         child: MaterialApp.router(
           title: 'KIVU',
           debugShowCheckedModeBanner: false,
