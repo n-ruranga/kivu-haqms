@@ -10,6 +10,7 @@ import 'package:kivu_haqms/features/auth/presentation/pages/splash_page.dart';
 import 'package:kivu_haqms/features/appointments/domain/entities/appointment_entity.dart';
 import 'package:kivu_haqms/features/appointments/presentation/pages/book_appointment_page.dart';
 import 'package:kivu_haqms/features/appointments/presentation/pages/booking_confirmation_page.dart';
+import 'package:kivu_haqms/features/doctors/domain/entities/doctor_entity.dart';
 import 'package:kivu_haqms/features/doctors/presentation/pages/find_doctor_page.dart';
 import 'package:kivu_haqms/features/home/presentation/pages/home_page.dart';
 import 'package:kivu_haqms/features/profile/presentation/pages/edit_profile_page.dart';
@@ -110,7 +111,10 @@ abstract final class AppRouter {
         GoRoute(
           path: AppRoutes.bookAppointment,
           parentNavigatorKey: rootNavigatorKey,
-          builder: (context, state) => const BookAppointmentPage(),
+          // A doctor picked on the "Find a Doctor" tab is handed over via `extra`.
+          builder: (context, state) => BookAppointmentPage(
+            initialDoctor: state.extra as DoctorEntity?,
+          ),
         ),
         GoRoute(
           path: AppRoutes.bookingConfirmation,

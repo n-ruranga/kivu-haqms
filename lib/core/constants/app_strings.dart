@@ -41,6 +41,15 @@ abstract final class AppStrings {
   static const String cancelAppointment = 'Cancel';
   static const String rescheduleAppointment = 'Reschedule';
 
+  // Find a doctor
+  static const String findDoctorTitle = 'Find a Doctor';
+  static const String searchDoctorsHint = 'Search doctors or specialties';
+  static const String allDepartments = 'All';
+  static const String noDoctorsFound = 'No doctors found';
+  static const String noDoctorsFoundBody =
+      'Try a different search or department filter.';
+  static const String couldNotLoadDoctors = 'Could not load the doctor directory.';
+
   // Navigation
   static const String navHome = 'Home';
   static const String navSchedule = 'Schedule';

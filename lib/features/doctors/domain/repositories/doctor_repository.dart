@@ -9,6 +9,9 @@ abstract interface class DoctorRepository {
   /// All bookable departments, ordered by name.
   Future<List<DepartmentEntity>> getDepartments();
 
+  /// Every doctor accepting patients, across all departments.
+  Future<List<DoctorEntity>> getAllDoctors();
+
   /// Doctors belonging to [departmentId] who are accepting patients.
   Future<List<DoctorEntity>> getDoctorsByDepartment(String departmentId);
 
