@@ -43,6 +43,21 @@ class FirestoreDoctorRepository implements DoctorRepository {
   }
 
   @override
+  Future<List<DoctorEntity>> getAllDoctors() async {
+    try {
+      final snapshot =
+          await _doctors.where('isAcceptingPatients', isEqualTo: true).get();
+
+      final doctors = snapshot.docs.map(DoctorModel.fromFirestore).toList()
+        ..sort((a, b) => b.rating.compareTo(a.rating));
+
+      return doctors;
+    } on FirebaseException catch (e) {
+      throw Exception(_mapFirestoreError(e, 'load doctors'));
+    }
+  }
+
+  @override
   Future<List<DoctorEntity>> getDoctorsByDepartment(String departmentId) async {
     try {
       final snapshot = await _doctors

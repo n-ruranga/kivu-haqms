@@ -12,11 +12,19 @@ import 'package:kivu_haqms/features/doctors/domain/repositories/doctor_repositor
 /// Each selection invalidates the ones after it, so picking a new department
 /// clears the chosen doctor, date and slot.
 class BookingCubit extends Cubit<BookingState> {
-  BookingCubit(this._doctorRepository, this._appointmentRepository)
-      : super(const BookingState());
+  BookingCubit(
+    this._doctorRepository,
+    this._appointmentRepository, {
+    DoctorEntity? initialDoctor,
+  })  : _initialDoctor = initialDoctor,
+        super(const BookingState());
 
   final DoctorRepository _doctorRepository;
   final AppointmentRepository _appointmentRepository;
+
+  /// Set when the form is opened from "Find a Doctor" with a doctor already
+  /// chosen — steps 1 and 2 are pre-filled once departments finish loading.
+  final DoctorEntity? _initialDoctor;
 
   Future<void> loadDepartments() async {
     emit(state.copyWith(status: BookingStatus.loading, clearError: true));
@@ -26,6 +34,20 @@ class BookingCubit extends Cubit<BookingState> {
         status: BookingStatus.ready,
         departments: departments,
       ));
+
+      final initialDoctor = _initialDoctor;
+      if (initialDoctor != null) {
+        final department = departments
+            .where((d) => d.id == initialDoctor.departmentId)
+            .firstOrNull;
+        if (department != null) {
+          await selectDepartment(department);
+          final loadedDoctor = state.doctors
+              .where((d) => d.id == initialDoctor.id)
+              .firstOrNull;
+          await selectDoctor(loadedDoctor ?? initialDoctor);
+        }
+      }
     } catch (e) {
       emit(state.copyWith(
         status: BookingStatus.failure,

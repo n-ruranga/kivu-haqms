@@ -15,11 +15,15 @@ import 'package:kivu_haqms/features/appointments/presentation/widgets/doctor_opt
 import 'package:kivu_haqms/features/appointments/presentation/widgets/time_slot_grid.dart';
 import 'package:kivu_haqms/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:kivu_haqms/features/auth/presentation/cubit/auth_state.dart';
+import 'package:kivu_haqms/features/doctors/domain/entities/doctor_entity.dart';
 import 'package:kivu_haqms/features/doctors/domain/repositories/doctor_repository.dart';
 
 /// Step-by-step booking form: department -> doctor -> date -> time -> confirm.
 class BookAppointmentPage extends StatelessWidget {
-  const BookAppointmentPage({super.key});
+  const BookAppointmentPage({super.key, this.initialDoctor});
+
+  /// Passed when opened from "Find a Doctor" so steps 1-2 are pre-filled.
+  final DoctorEntity? initialDoctor;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +31,7 @@ class BookAppointmentPage extends StatelessWidget {
       create: (context) => BookingCubit(
         context.read<DoctorRepository>(),
         context.read<AppointmentRepository>(),
+        initialDoctor: initialDoctor,
       )..loadDepartments(),
       child: const _BookAppointmentView(),
     );
