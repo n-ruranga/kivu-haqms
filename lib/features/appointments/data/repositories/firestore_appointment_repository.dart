@@ -33,10 +33,13 @@ class FirestoreAppointmentRepository implements AppointmentRepository {
         );
       }
 
-      final model = AppointmentModel.fromEntity(appointment);
+      // Same-day ticket number for this doctor: one past however many active
+      // bookings already exist, so the queue tracker has something to count.
+      final ticketed = appointment.copyWith(queueNumber: taken.length + 1);
+      final model = AppointmentModel.fromEntity(ticketed);
       final doc = await _appointments.add(model.toMap());
 
-      return appointment.copyWith(id: doc.id);
+      return ticketed.copyWith(id: doc.id);
     } on FirebaseException catch (e) {
       throw Exception(_mapFirestoreError(e, 'book this appointment'));
     }
@@ -67,6 +70,24 @@ class FirestoreAppointmentRepository implements AppointmentRepository {
     return _appointments
         .where('patientId', isEqualTo: patientId)
         .orderBy('scheduledAt', descending: true)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map(AppointmentModel.fromFirestore).toList());
+  }
+
+  @override
+  Stream<List<AppointmentEntity>> watchAppointmentsForDoctorOnDate({
+    required String doctorId,
+    required DateTime date,
+  }) {
+    final startOfDay = DateTime(date.year, date.month, date.day);
+    final endOfDay = startOfDay.add(const Duration(days: 1));
+
+    return _appointments
+        .where('doctorId', isEqualTo: doctorId)
+        .where('scheduledAt',
+            isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay))
+        .where('scheduledAt', isLessThan: Timestamp.fromDate(endOfDay))
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map(AppointmentModel.fromFirestore).toList());

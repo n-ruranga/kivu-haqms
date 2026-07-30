@@ -17,6 +17,14 @@ abstract interface class AppointmentRepository {
   /// READ — live stream of a patient's appointments for the schedule screen.
   Stream<List<AppointmentEntity>> watchAppointmentsForPatient(String patientId);
 
+  /// READ — live stream of every appointment booked with [doctorId] on
+  /// [date], across all patients, so the queue tracker can compute a real
+  /// position from how many are ahead and how many have been seen.
+  Stream<List<AppointmentEntity>> watchAppointmentsForDoctorOnDate({
+    required String doctorId,
+    required DateTime date,
+  });
+
   /// READ — a single appointment, or `null` if it was deleted.
   Future<AppointmentEntity?> getAppointmentById(String appointmentId);
 
