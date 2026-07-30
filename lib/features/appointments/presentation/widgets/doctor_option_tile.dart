@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 import 'package:kivu_haqms/features/doctors/domain/entities/doctor_entity.dart';
 
 /// Selectable doctor row — step 2 of the booking form.
@@ -27,10 +28,10 @@ class DoctorOptionTile extends StatelessWidget {
           duration: const Duration(milliseconds: 180),
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.primaryLight : AppColors.surface,
+            color: isSelected ? context.primaryTintBackground : context.cardSurface,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: isSelected ? AppColors.primary : AppColors.border,
+              color: isSelected ? AppColors.primary : context.cardBorder,
               width: isSelected ? 1.5 : 1,
             ),
           ),
@@ -40,7 +41,7 @@ class DoctorOptionTile extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: isSelected ? AppColors.primary : AppColors.primaryLight,
+                  color: isSelected ? AppColors.primary : context.primaryTintBackground,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Center(
@@ -82,17 +83,17 @@ class DoctorOptionTile extends StatelessWidget {
                         const SizedBox(width: 3),
                         Text(
                           doctor.rating.toStringAsFixed(1),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.textPrimary,
+                            color: context.primaryText,
                           ),
                         ),
                         const SizedBox(width: 10),
-                        const Icon(
+                        Icon(
                           Icons.location_on_outlined,
                           size: 14,
-                          color: AppColors.textSecondary,
+                          color: context.mutedText,
                         ),
                         const SizedBox(width: 3),
                         Expanded(
@@ -100,9 +101,9 @@ class DoctorOptionTile extends StatelessWidget {
                             doctor.hospital,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
-                              color: AppColors.textSecondary,
+                              color: context.mutedText,
                             ),
                           ),
                         ),

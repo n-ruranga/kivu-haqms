@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kivu_haqms/core/constants/app_colors.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 import 'package:kivu_haqms/core/constants/app_strings.dart';
 import 'package:kivu_haqms/features/profile/domain/entities/profile_entity.dart';
 import 'package:kivu_haqms/features/profile/presentation/cubit/profile_cubit.dart';
@@ -99,9 +99,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
         leading: IconButton(
           onPressed: () => context.pop(),
           icon: const Icon(Icons.arrow_back),
@@ -145,7 +143,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     Text(
                       AppStrings.editProfileSubtitle,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textSecondary,
+                            color: context.mutedText,
                           ),
                     ),
                     const SizedBox(height: 24),
@@ -200,8 +198,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   : AppStrings.selectDate,
                               style: TextStyle(
                                 color: _dateOfBirth != null
-                                    ? AppColors.textPrimary
-                                    : AppColors.textMuted,
+                                    ? context.primaryText
+                                    : context.mutedText,
                               ),
                             ),
                             if (_dateOfBirth != null)

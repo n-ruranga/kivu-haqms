@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 
 /// Numbered section title used for each step of the booking form.
 class BookingStepHeader extends StatelessWidget {
@@ -22,7 +23,7 @@ class BookingStepHeader extends StatelessWidget {
           width: 26,
           height: 26,
           decoration: BoxDecoration(
-            color: isComplete ? AppColors.success : AppColors.primaryLight,
+            color: isComplete ? AppColors.success : context.primaryTintBackground,
             shape: BoxShape.circle,
           ),
           child: Center(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
 import 'package:kivu_haqms/core/constants/app_strings.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 import 'package:kivu_haqms/core/utils/date_format.dart';
 import 'package:kivu_haqms/features/appointments/domain/entities/appointment_entity.dart';
 import 'package:kivu_haqms/features/appointments/domain/repositories/appointment_repository.dart';
@@ -23,7 +24,6 @@ class QueueTrackerPage extends StatelessWidget {
     final appointment = this.appointment;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text(AppStrings.queueTrackerTitle),
         centerTitle: true,
@@ -100,11 +100,7 @@ class _AppointmentSummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
-      ),
+      decoration: context.cardDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -164,7 +160,7 @@ class _InfoRow extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 16, color: AppColors.textSecondary),
+        Icon(icon, size: 16, color: context.mutedText),
         const SizedBox(width: 8),
         Expanded(
           child: Text(text, style: Theme.of(context).textTheme.bodyMedium),
@@ -187,10 +183,10 @@ class _NoActiveQueue extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
+            Icon(
               Icons.pending_actions_outlined,
               size: 40,
-              color: AppColors.textMuted,
+              color: context.mutedText,
             ),
             const SizedBox(height: 12),
             Text(

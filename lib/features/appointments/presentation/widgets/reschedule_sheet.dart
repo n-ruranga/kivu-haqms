@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 import 'package:kivu_haqms/features/appointments/domain/entities/appointment_entity.dart';
 import 'package:kivu_haqms/features/appointments/domain/repositories/appointment_repository.dart';
 import 'package:kivu_haqms/features/appointments/presentation/cubit/reschedule_cubit.dart';
@@ -17,7 +18,7 @@ Future<bool> showRescheduleSheet(
   final result = await showModalBottomSheet<bool>(
     context: context,
     isScrollControlled: true,
-    backgroundColor: AppColors.surface,
+    backgroundColor: context.cardSurface,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
@@ -81,7 +82,7 @@ class _RescheduleSheet extends StatelessWidget {
                       width: 42,
                       height: 4,
                       decoration: BoxDecoration(
-                        color: AppColors.border,
+                        color: context.cardBorder,
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),

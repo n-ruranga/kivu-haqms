@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 import 'package:kivu_haqms/core/utils/date_format.dart';
 
 /// Horizontal strip of the doctor's next working days — step 3.
@@ -43,10 +44,10 @@ class DateStrip extends StatelessWidget {
                 duration: const Duration(milliseconds: 180),
                 width: 62,
                 decoration: BoxDecoration(
-                  color: isSelected ? AppColors.primary : AppColors.surface,
+                  color: isSelected ? AppColors.primary : context.cardSurface,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: isSelected ? AppColors.primary : AppColors.border,
+                    color: isSelected ? AppColors.primary : context.cardBorder,
                   ),
                 ),
                 child: Column(
@@ -59,7 +60,7 @@ class DateStrip extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                         color: isSelected
                             ? Colors.white70
-                            : AppColors.textSecondary,
+                            : context.mutedText,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -69,7 +70,7 @@ class DateStrip extends StatelessWidget {
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                         color:
-                            isSelected ? Colors.white : AppColors.textPrimary,
+                            isSelected ? Colors.white : context.primaryText,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -79,7 +80,7 @@ class DateStrip extends StatelessWidget {
                         fontSize: 10,
                         color: isSelected
                             ? Colors.white70
-                            : AppColors.textSecondary,
+                            : context.mutedText,
                       ),
                     ),
                   ],

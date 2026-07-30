@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kivu_haqms/core/constants/app_colors.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 import 'package:kivu_haqms/core/constants/app_routes.dart';
 import 'package:kivu_haqms/core/constants/app_strings.dart';
 import 'package:kivu_haqms/features/doctors/domain/entities/doctor_entity.dart';
@@ -49,7 +49,6 @@ class _FindDoctorViewState extends State<_FindDoctorView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,10 +160,10 @@ class _EmptyResults extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
+            Icon(
               Icons.search_off_rounded,
               size: 40,
-              color: AppColors.textMuted,
+              color: context.mutedText,
             ),
             const SizedBox(height: 12),
             Text(
@@ -198,10 +197,10 @@ class _LoadFailed extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
+            Icon(
               Icons.cloud_off_outlined,
               size: 40,
-              color: AppColors.textMuted,
+              color: context.mutedText,
             ),
             const SizedBox(height: 12),
             Text(

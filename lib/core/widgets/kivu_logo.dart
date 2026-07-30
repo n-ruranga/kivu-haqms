@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kivu_haqms/core/constants/app_assets.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
 import 'package:kivu_haqms/core/constants/app_strings.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 
 /// Brand mark: logo image + optional "KIVU" wordmark and tagline.
 class KivuLogo extends StatelessWidget {
@@ -53,7 +54,7 @@ class KivuLogo extends StatelessWidget {
           Text(
             AppStrings.tagline,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
+                  color: context.mutedText,
                   fontSize: 12,
                 ),
           ),

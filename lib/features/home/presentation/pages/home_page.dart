@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
 import 'package:kivu_haqms/core/constants/app_routes.dart';
 import 'package:kivu_haqms/core/constants/app_strings.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 import 'package:kivu_haqms/core/widgets/kivu_logo.dart';
 import 'package:kivu_haqms/features/appointments/domain/entities/appointment_entity.dart';
 import 'package:kivu_haqms/features/appointments/domain/repositories/appointment_repository.dart';
@@ -59,7 +60,6 @@ class _HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: SafeArea(
         child: BlocListener<MyAppointmentsCubit, MyAppointmentsState>(
           listenWhen: (previous, current) =>
@@ -163,7 +163,7 @@ class _GreetingSection extends StatelessWidget {
             Text(
               AppStrings.welcomeBack,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.mutedText,
                     letterSpacing: 1.5,
                   ),
             ),
@@ -279,11 +279,7 @@ class _NoUpcomingCard extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
-      ),
+      decoration: context.cardDecoration(),
       child: Column(
         children: [
           const Icon(
@@ -361,7 +357,7 @@ class _QuickConsultationsSection extends StatelessWidget {
       title: department.name,
       icon: DepartmentIcons.forKey(department.iconKey),
       iconColor: isAlt ? AppColors.success : AppColors.primary,
-      backgroundColor: isAlt ? AppColors.successLight : AppColors.primaryLight,
+      backgroundColor: isAlt ? context.successTintBackground : context.primaryTintBackground,
       onTap: () => context.push(AppRoutes.bookAppointment),
     );
   }
@@ -381,11 +377,7 @@ class _DepartmentsError extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
-      ),
+      decoration: context.cardDecoration(),
       child: Column(
         children: [
           Text(message, textAlign: TextAlign.center),
