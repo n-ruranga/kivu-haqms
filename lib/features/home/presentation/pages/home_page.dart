@@ -20,6 +20,7 @@ import 'package:kivu_haqms/features/home/presentation/cubit/home_cubit.dart';
 import 'package:kivu_haqms/features/home/presentation/cubit/home_state.dart';
 import 'package:kivu_haqms/features/home/presentation/widgets/quick_consultation_card.dart';
 import 'package:kivu_haqms/features/home/presentation/widgets/queue_status_card.dart';
+import 'package:kivu_haqms/features/notifications/presentation/widgets/notification_bell_button.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -140,12 +141,7 @@ class _HomeHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const KivuLogo(),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.notifications_outlined),
-          color: AppColors.primary,
-          iconSize: 26,
-        ),
+        const NotificationBellButton(),
       ],
     );
   }
