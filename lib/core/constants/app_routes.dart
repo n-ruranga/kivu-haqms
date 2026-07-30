@@ -16,4 +16,5 @@ abstract final class AppRoutes {
   static const String bookingConfirmation = '/booking-confirmation';
   static const String queueTracker = '/queue-tracker';
   static const String profileEdit = '/profile/edit';
+  static const String notifications = '/notifications';
 }

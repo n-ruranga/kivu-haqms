@@ -103,4 +103,12 @@ abstract final class AppStrings {
 
   static String resetPasswordSent(String email) =>
       'Password reset link sent to $email.';
+
+  // Notifications
+  static const String notificationsTitle = 'Notifications';
+  static const String noNotifications = 'No notifications yet';
+  static const String noNotificationsBody =
+      'Updates about your appointments and queue position will appear here.';
+  static const String markAllRead = 'Mark all read';
+  static const String notificationsLoadError = 'Could not load notifications.';
 }
