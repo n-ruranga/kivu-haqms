@@ -209,11 +209,12 @@ The cancelled-appointment filter is applied **in Dart** rather than as a fourth
 
 Summarised from `firestore.rules`:
 
-- `departments` and `doctors` — any signed-in user may read; nobody may write
-  from the client (seeded once, then managed by the hospital).
-- `appointments` — a patient may read and write **only** documents where
-  `patientId == request.auth.uid`; the `patientId` may never be changed after
-  creation.
+- `departments` and `doctors` — any signed-in user may read; signed-in users
+  may write so first-launch seeding works (tighten later for production).
+- `appointments` — patients may **get/update/delete** only their own documents
+  (`patientId == request.auth.uid`). **List/query** is allowed for any
+  signed-in user so booking can look up taken slots by `doctorId` + date.
+- `users` — a user may only read/write their own profile document.
 - Everything else is denied by default.
 
 ---
