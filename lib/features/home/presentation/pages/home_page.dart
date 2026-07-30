@@ -201,7 +201,8 @@ class _QueueSection extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 0),
           child: QueueStatusCard(
             position: queueNumber,
-            onTap: () => context.push(AppRoutes.queueTracker),
+            onTap: () =>
+                context.push(AppRoutes.queueTracker, extra: next),
           ),
         );
       },

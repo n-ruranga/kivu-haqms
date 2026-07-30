@@ -127,7 +127,10 @@ abstract final class AppRouter {
         GoRoute(
           path: AppRoutes.queueTracker,
           parentNavigatorKey: rootNavigatorKey,
-          builder: (context, state) => const QueueTrackerPage(),
+          // The appointment being tracked is handed over via `extra`.
+          builder: (context, state) => QueueTrackerPage(
+            appointment: state.extra as AppointmentEntity?,
+          ),
         ),
         GoRoute(
           path: AppRoutes.profileEdit,

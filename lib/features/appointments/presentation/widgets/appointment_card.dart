@@ -13,12 +13,16 @@ class AppointmentCard extends StatelessWidget {
     this.isBusy = false,
     this.onCancel,
     this.onReschedule,
+    this.onTrackQueue,
   });
 
   final AppointmentEntity appointment;
   final bool isBusy;
   final VoidCallback? onCancel;
   final VoidCallback? onReschedule;
+
+  /// Shown as a "Track queue" link when the appointment has a ticket number.
+  final VoidCallback? onTrackQueue;
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +85,24 @@ class AppointmentCard extends StatelessWidget {
           if (appointment.reason case final reason? when reason.isNotEmpty) ...[
             const SizedBox(height: 8),
             _InfoRow(icon: Icons.notes_outlined, text: reason),
+          ],
+          if (onTrackQueue != null &&
+              appointment.queueNumber != null &&
+              appointment.canBeModified) ...[
+            const SizedBox(height: 10),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                onPressed: onTrackQueue,
+                icon: const Icon(Icons.pending_actions_outlined, size: 18),
+                label: const Text('Track queue'),
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+              ),
+            ),
           ],
           if (appointment.canBeModified) ...[
             const SizedBox(height: 16),
