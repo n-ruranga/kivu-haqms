@@ -35,9 +35,15 @@ service cloud.firestore {
     }
 
     match /appointments/{appointmentId} {
-      // A patient only ever sees their own appointments.
-      allow read: if isSignedIn()
-                  && resource.data.patientId == request.auth.uid;
+      // Single-document reads stay private to the patient who booked.
+      allow get: if isSignedIn()
+                 && resource.data.patientId == request.auth.uid;
+
+      // List/query must be readable by any signed-in user so booking can
+      // query taken slots by doctorId + scheduledAt (getBookedSlots).
+      // Without this, Firestore denies the query with permission-denied
+      // because other patients' docs would match the filter.
+      allow list: if isSignedIn();
 
       // New appointments must belong to the caller and start as pending.
       allow create: if isSignedIn()
