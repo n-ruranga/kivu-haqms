@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kivu_haqms/core/router/app_router.dart';
 import 'package:kivu_haqms/core/theme/app_theme.dart';
+import 'package:kivu_haqms/core/theme/theme_cubit.dart';
+import 'package:kivu_haqms/core/theme/theme_preferences_local_data_source.dart';
+import 'package:kivu_haqms/core/theme/theme_state.dart';
 import 'package:kivu_haqms/features/appointments/data/repositories/firestore_appointment_repository.dart';
 import 'package:kivu_haqms/features/appointments/domain/repositories/appointment_repository.dart';
 import 'package:kivu_haqms/features/auth/data/repositories/firebase_auth_repository.dart';
@@ -33,6 +36,7 @@ class _KivuAppState extends State<KivuApp> {
   late final AuthCubit _authCubit;
   late final ProfileCubit _profileCubit;
   late final NotificationsCubit _notificationsCubit;
+  late final ThemeCubit _themeCubit;
   late final GoRouter _router;
 
   @override
@@ -53,6 +57,7 @@ class _KivuAppState extends State<KivuApp> {
       _profileRepository,
       _authRepository,
     );
+    _themeCubit = ThemeCubit(ThemePreferencesLocalDataSource());
     _router = AppRouter.create(_authCubit);
   }
 
@@ -60,6 +65,7 @@ class _KivuAppState extends State<KivuApp> {
   void dispose() {
     _notificationsCubit.close();
     _profileCubit.close();
+    _themeCubit.close();
     _authCubit.close();
     _router.dispose();
     super.dispose();
@@ -84,12 +90,19 @@ class _KivuAppState extends State<KivuApp> {
           BlocProvider<AuthCubit>.value(value: _authCubit),
           BlocProvider<ProfileCubit>.value(value: _profileCubit),
           BlocProvider<NotificationsCubit>.value(value: _notificationsCubit),
+          BlocProvider<ThemeCubit>.value(value: _themeCubit),
         ],
-        child: MaterialApp.router(
-          title: 'KIVU',
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.light,
-          routerConfig: _router,
+        child: BlocBuilder<ThemeCubit, ThemeState>(
+          builder: (context, themeState) {
+            return MaterialApp.router(
+              title: 'KIVU',
+              debugShowCheckedModeBanner: false,
+              theme: AppTheme.light,
+              darkTheme: AppTheme.dark,
+              themeMode: themeState.themeMode,
+              routerConfig: _router,
+            );
+          },
         ),
       ),
     );
