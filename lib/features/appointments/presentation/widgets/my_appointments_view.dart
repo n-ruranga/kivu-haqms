@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
+import 'package:kivu_haqms/core/constants/app_routes.dart';
 import 'package:kivu_haqms/core/constants/app_strings.dart';
 import 'package:kivu_haqms/features/appointments/domain/entities/appointment_entity.dart';
 import 'package:kivu_haqms/features/appointments/domain/repositories/appointment_repository.dart';
@@ -84,6 +86,10 @@ class _MyAppointmentsList extends StatelessWidget {
                   isBusy: state.busyAppointmentId == appointment.id,
                   onCancel: () => _confirmCancel(context, appointment),
                   onReschedule: () => showRescheduleSheet(context, appointment),
+                  onTrackQueue: () => context.push(
+                    AppRoutes.queueTracker,
+                    extra: appointment,
+                  ),
                 ),
                 const SizedBox(height: 12),
               ],

@@ -50,6 +50,16 @@ abstract final class AppStrings {
       'Try a different search or department filter.';
   static const String couldNotLoadDoctors = 'Could not load the doctor directory.';
 
+  // Queue tracker
+  static const String queueTrackerTitle = 'Queue Tracker';
+  static const String peopleAhead = 'people ahead of you';
+  static const String totalInQueueLabel = 'Total in queue today';
+  static const String noActiveQueue = 'No active queue';
+  static const String noActiveQueueBody =
+      'Book an appointment to see your live queue position here.';
+  static const String queueAppointmentDone =
+      'This appointment has already been seen or cancelled.';
+
   // Navigation
   static const String navHome = 'Home';
   static const String navSchedule = 'Schedule';
