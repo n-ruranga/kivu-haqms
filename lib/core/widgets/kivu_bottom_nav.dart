@@ -21,10 +21,13 @@ class KivuBottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.surface,
-        border: Border(top: BorderSide(color: AppColors.border)),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        border: Border(top: BorderSide(color: Theme.of(context).dividerColor)),
       ),
       child: SafeArea(
         top: false,
@@ -35,6 +38,7 @@ class KivuBottomNav extends StatelessWidget {
             children: List.generate(_items.length, (index) {
               final item = _items[index];
               final isActive = index == currentIndex;
+              final inactiveColor = textTheme.bodyMedium?.color ?? colorScheme.onSurfaceVariant;
 
               return InkWell(
                 onTap: () => onTap(index),
@@ -53,7 +57,7 @@ class KivuBottomNav extends StatelessWidget {
                         ),
                         child: Icon(
                           isActive ? item.activeIcon : item.icon,
-                          color: isActive ? Colors.white : AppColors.textSecondary,
+                          color: isActive ? Colors.white : inactiveColor,
                           size: 22,
                         ),
                       ),
@@ -63,7 +67,7 @@ class KivuBottomNav extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
-                          color: isActive ? AppColors.primary : AppColors.textSecondary,
+                          color: isActive ? AppColors.primary : inactiveColor,
                         ),
                       ),
                     ],

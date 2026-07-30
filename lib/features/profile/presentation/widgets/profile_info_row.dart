@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kivu_haqms/core/constants/app_colors.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 
 class ProfileInfoRow extends StatelessWidget {
   const ProfileInfoRow({
@@ -20,7 +20,7 @@ class ProfileInfoRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 20, color: AppColors.textSecondary),
+          Icon(icon, size: 20, color: context.mutedText),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -29,7 +29,7 @@ class ProfileInfoRow extends StatelessWidget {
                 Text(
                   label,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: context.mutedText,
                         letterSpacing: 0.5,
                       ),
                 ),

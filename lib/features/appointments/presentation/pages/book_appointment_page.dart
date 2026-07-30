@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
 import 'package:kivu_haqms/core/constants/app_routes.dart';
 import 'package:kivu_haqms/core/constants/app_strings.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 import 'package:kivu_haqms/core/utils/date_format.dart';
 import 'package:kivu_haqms/features/appointments/domain/repositories/appointment_repository.dart';
 import 'package:kivu_haqms/features/appointments/presentation/cubit/booking_cubit.dart';
@@ -44,7 +45,6 @@ class _BookAppointmentView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text(AppStrings.bookAppointmentTitle),
         centerTitle: true,
@@ -296,7 +296,7 @@ class _ConfirmBar extends StatelessWidget {
                       child: Text(
                         summary,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: AppColors.textPrimary,
+                              color: context.primaryText,
                               fontWeight: FontWeight.w500,
                             ),
                       ),
@@ -367,11 +367,7 @@ class _Hint extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
-      ),
+      decoration: context.cardDecoration(),
       child: Text(
         text,
         textAlign: TextAlign.center,
@@ -395,10 +391,10 @@ class _LoadFailed extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
+            Icon(
               Icons.cloud_off_outlined,
               size: 40,
-              color: AppColors.textMuted,
+              color: context.mutedText,
             ),
             const SizedBox(height: 12),
             Text(

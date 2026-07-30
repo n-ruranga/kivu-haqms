@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
 import 'package:kivu_haqms/core/constants/app_routes.dart';
 import 'package:kivu_haqms/core/constants/app_strings.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 import 'package:kivu_haqms/core/utils/date_format.dart';
 import 'package:kivu_haqms/features/appointments/domain/entities/appointment_entity.dart';
 import 'package:kivu_haqms/features/appointments/presentation/widgets/appointment_status_badge.dart';
@@ -46,7 +47,6 @@ class BookingConfirmationPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -101,8 +101,8 @@ class _SuccessMark extends StatelessWidget {
     return Container(
       width: 88,
       height: 88,
-      decoration: const BoxDecoration(
-        color: AppColors.successLight,
+      decoration: BoxDecoration(
+        color: context.successTintBackground,
         shape: BoxShape.circle,
       ),
       child: const Icon(
@@ -124,11 +124,7 @@ class _SummaryCard extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.border),
-      ),
+      decoration: context.cardDecoration(borderRadius: BorderRadius.circular(14)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -138,7 +134,7 @@ class _SummaryCard extends StatelessWidget {
               Text(
                 appointment.departmentName,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.textSecondary,
+                      color: context.mutedText,
                     ),
               ),
               AppointmentStatusBadge(status: appointment.status),
@@ -189,7 +185,7 @@ class _SummaryRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size: 18, color: AppColors.textSecondary),
+        Icon(icon, size: 18, color: context.mutedText),
         const SizedBox(width: 10),
         Text(label, style: Theme.of(context).textTheme.bodyMedium),
         const Spacer(),

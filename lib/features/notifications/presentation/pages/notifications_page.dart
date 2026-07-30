@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kivu_haqms/core/constants/app_colors.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 import 'package:kivu_haqms/core/constants/app_routes.dart';
 import 'package:kivu_haqms/core/constants/app_strings.dart';
 import 'package:kivu_haqms/features/appointments/domain/repositories/appointment_repository.dart';
@@ -17,7 +17,6 @@ class NotificationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text(AppStrings.notificationsTitle),
         centerTitle: true,
@@ -61,10 +60,10 @@ class NotificationsPage extends StatelessWidget {
 
           return ListView.separated(
             itemCount: state.notifications.length,
-            separatorBuilder: (_, _) => const Divider(
+            separatorBuilder: (_, _) => Divider(
               height: 1,
               indent: 72,
-              color: AppColors.border,
+              color: context.cardBorder,
             ),
             itemBuilder: (context, index) {
               final notification = state.notifications[index];
@@ -125,7 +124,7 @@ class _EmptyState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 48, color: AppColors.textMuted),
+            Icon(icon, size: 48, color: context.mutedText),
             const SizedBox(height: 16),
             Text(
               title,
@@ -137,7 +136,7 @@ class _EmptyState extends StatelessWidget {
               Text(
                 subtitle!,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
+                      color: context.mutedText,
                     ),
                 textAlign: TextAlign.center,
               ),

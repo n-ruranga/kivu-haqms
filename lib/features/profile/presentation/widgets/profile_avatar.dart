@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 
 class ProfileAvatar extends StatelessWidget {
   const ProfileAvatar({
@@ -24,7 +25,7 @@ class ProfileAvatar extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: AppColors.primaryLight,
+        color: context.primaryTintBackground,
         borderRadius: BorderRadius.circular(size * 0.2),
       ),
       child: Center(

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
 import 'package:kivu_haqms/core/constants/app_routes.dart';
 import 'package:kivu_haqms/core/constants/app_strings.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 import 'package:kivu_haqms/features/appointments/domain/entities/appointment_entity.dart';
 import 'package:kivu_haqms/features/appointments/domain/repositories/appointment_repository.dart';
 import 'package:kivu_haqms/features/appointments/presentation/cubit/my_appointments_cubit.dart';
@@ -161,12 +162,12 @@ class _SectionTitle extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
           decoration: BoxDecoration(
-            color: AppColors.primaryLight,
+            color: context.primaryTintBackground,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
             '$count',
-            style: const TextStyle(
+            style: TextStyle(
               color: AppColors.primary,
               fontSize: 11,
               fontWeight: FontWeight.w700,
@@ -192,11 +193,11 @@ class _EmptyState extends StatelessWidget {
             Container(
               width: 72,
               height: 72,
-              decoration: const BoxDecoration(
-                color: AppColors.primaryLight,
+              decoration: BoxDecoration(
+                color: context.primaryTintBackground,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.event_note_outlined,
                 size: 34,
                 color: AppColors.primary,

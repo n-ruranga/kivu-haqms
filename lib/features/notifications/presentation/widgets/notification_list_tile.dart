@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 import 'package:kivu_haqms/core/utils/date_format.dart';
 import 'package:kivu_haqms/features/notifications/domain/entities/notification_entity.dart';
 import 'package:kivu_haqms/features/notifications/domain/entities/notification_type.dart';
@@ -19,7 +20,9 @@ class NotificationListTile extends StatelessWidget {
     final isUnread = !notification.isRead;
 
     return Material(
-      color: isUnread ? AppColors.primaryLight.withValues(alpha: 0.35) : AppColors.surface,
+      color: isUnread
+          ? context.primaryTintBackground.withValues(alpha: 0.65)
+          : context.cardSurface,
       child: InkWell(
         onTap: onTap,
         child: Padding(
@@ -31,7 +34,7 @@ class NotificationListTile extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: _iconBackground(notification.type),
+                  color: _iconBackground(context, notification.type),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
@@ -71,14 +74,14 @@ class NotificationListTile extends StatelessWidget {
                     Text(
                       notification.body,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textSecondary,
+                            color: context.mutedText,
                           ),
                     ),
                     const SizedBox(height: 6),
                     Text(
                       _timeLabel(notification.createdAt),
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: AppColors.textMuted,
+                            color: context.mutedText,
                           ),
                     ),
                   ],
@@ -101,13 +104,16 @@ class NotificationListTile extends StatelessWidget {
         NotificationType.queueAlmostReady => Icons.people_outline,
       };
 
-  Color _iconBackground(NotificationType type) => switch (type) {
+  Color _iconBackground(BuildContext context, NotificationType type) =>
+      switch (type) {
         NotificationType.appointmentConfirmed ||
         NotificationType.appointmentCompleted =>
-          AppColors.successLight,
-        NotificationType.appointmentCancelled => AppColors.error.withValues(alpha: 0.12),
-        NotificationType.queueAlmostReady => AppColors.warning.withValues(alpha: 0.15),
-        _ => AppColors.primaryLight,
+          context.successTintBackground,
+        NotificationType.appointmentCancelled =>
+          AppColors.error.withValues(alpha: 0.12),
+        NotificationType.queueAlmostReady =>
+          AppColors.warning.withValues(alpha: 0.15),
+        _ => context.primaryTintBackground,
       };
 
   Color _iconColor(NotificationType type) => switch (type) {
