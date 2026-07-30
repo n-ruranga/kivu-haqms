@@ -7,4 +7,5 @@ abstract final class FirebaseConstants {
   static const String departmentsCollection = 'departments';
   static const String doctorsCollection = 'doctors';
   static const String appointmentsCollection = 'appointments';
+  static const String notificationsCollection = 'notifications';
 }
