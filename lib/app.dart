@@ -12,6 +12,9 @@ import 'package:kivu_haqms/features/doctors/data/repositories/firestore_doctor_r
 import 'package:kivu_haqms/features/doctors/domain/repositories/doctor_repository.dart';
 import 'package:kivu_haqms/features/profile/data/repositories/firestore_profile_repository.dart';
 import 'package:kivu_haqms/features/profile/domain/repositories/profile_repository.dart';
+import 'package:kivu_haqms/features/notifications/data/repositories/firestore_notification_repository.dart';
+import 'package:kivu_haqms/features/notifications/domain/repositories/notification_repository.dart';
+import 'package:kivu_haqms/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:kivu_haqms/features/profile/presentation/cubit/profile_cubit.dart';
 
 class KivuApp extends StatefulWidget {
@@ -26,8 +29,10 @@ class _KivuAppState extends State<KivuApp> {
   late final DoctorRepository _doctorRepository;
   late final AppointmentRepository _appointmentRepository;
   late final ProfileRepository _profileRepository;
+  late final NotificationRepository _notificationRepository;
   late final AuthCubit _authCubit;
   late final ProfileCubit _profileCubit;
+  late final NotificationsCubit _notificationsCubit;
   late final GoRouter _router;
 
   @override
@@ -39,13 +44,21 @@ class _KivuAppState extends State<KivuApp> {
     _profileRepository = FirestoreProfileRepository(
       authRepository: _authRepository,
     );
+    _notificationRepository = FirestoreNotificationRepository();
     _authCubit = AuthCubit(_authRepository);
     _profileCubit = ProfileCubit(_profileRepository);
+    _notificationsCubit = NotificationsCubit(
+      _notificationRepository,
+      _appointmentRepository,
+      _profileRepository,
+      _authRepository,
+    );
     _router = AppRouter.create(_authCubit);
   }
 
   @override
   void dispose() {
+    _notificationsCubit.close();
     _profileCubit.close();
     _authCubit.close();
     _router.dispose();
@@ -62,11 +75,15 @@ class _KivuAppState extends State<KivuApp> {
           value: _appointmentRepository,
         ),
         RepositoryProvider<ProfileRepository>.value(value: _profileRepository),
+        RepositoryProvider<NotificationRepository>.value(
+          value: _notificationRepository,
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthCubit>.value(value: _authCubit),
           BlocProvider<ProfileCubit>.value(value: _profileCubit),
+          BlocProvider<NotificationsCubit>.value(value: _notificationsCubit),
         ],
         child: MaterialApp.router(
           title: 'KIVU',

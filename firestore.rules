@@ -59,6 +59,22 @@ service cloud.firestore {
                     && resource.data.patientId == request.auth.uid;
     }
 
+    // Per-user notification inbox.
+    match /notifications/{notificationId} {
+      allow read: if isSignedIn()
+                  && resource.data.userId == request.auth.uid;
+
+      allow create: if isSignedIn()
+                    && request.resource.data.userId == request.auth.uid;
+
+      allow update: if isSignedIn()
+                    && resource.data.userId == request.auth.uid
+                    && request.resource.data.userId == resource.data.userId;
+
+      allow delete: if isSignedIn()
+                    && resource.data.userId == request.auth.uid;
+    }
+
     // Anything not matched above is denied.
     match /{document=**} {
       allow read, write: if false;

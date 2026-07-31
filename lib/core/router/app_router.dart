@@ -13,6 +13,7 @@ import 'package:kivu_haqms/features/appointments/presentation/pages/booking_conf
 import 'package:kivu_haqms/features/doctors/domain/entities/doctor_entity.dart';
 import 'package:kivu_haqms/features/doctors/presentation/pages/find_doctor_page.dart';
 import 'package:kivu_haqms/features/home/presentation/pages/home_page.dart';
+import 'package:kivu_haqms/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:kivu_haqms/features/profile/presentation/pages/edit_profile_page.dart';
 import 'package:kivu_haqms/features/profile/presentation/pages/profile_page.dart';
 import 'package:kivu_haqms/features/schedule/presentation/pages/queue_tracker_page.dart';
@@ -136,6 +137,11 @@ abstract final class AppRouter {
           path: AppRoutes.profileEdit,
           parentNavigatorKey: rootNavigatorKey,
           builder: (context, state) => const EditProfilePage(),
+        ),
+        GoRoute(
+          path: AppRoutes.notifications,
+          parentNavigatorKey: rootNavigatorKey,
+          builder: (context, state) => const NotificationsPage(),
         ),
       ],
     );
