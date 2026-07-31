@@ -11,12 +11,22 @@ abstract final class AppColors {
   static const Color background = Color(0xFFF5F7FA);
   static const Color surface = Color(0xFFFFFFFF);
 
+  static const Color backgroundDark = Color(0xFF0F1117);
+  static const Color surfaceDark = Color(0xFF1A1D27);
+
   static const Color textPrimary = Color(0xFF1A1A2E);
   static const Color textSecondary = Color(0xFF6B7280);
   static const Color textMuted = Color(0xFF9CA3AF);
 
+  static const Color textPrimaryDark = Color(0xFFF3F4F6);
+  static const Color textSecondaryDark = Color(0xFF9CA3AF);
+  static const Color textMutedDark = Color(0xFF6B7280);
+
   static const Color border = Color(0xFFE5E7EB);
   static const Color divider = Color(0xFFE5E7EB);
+
+  static const Color borderDark = Color(0xFF2D3748);
+  static const Color dividerDark = Color(0xFF2D3748);
 
   static const Color success = Color(0xFF22C55E);
   static const Color successLight = Color(0xFFDCFCE7);

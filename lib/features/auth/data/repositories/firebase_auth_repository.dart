@@ -115,6 +115,22 @@ class FirebaseAuthRepository implements AuthRepository{
   }
 
   @override
+  Future<UserEntity> updateUserProfile({required String displayName}) async {
+    final user = _firebaseAuth.currentUser;
+    if (user == null) {
+      throw Exception('You must be signed in to update your profile.');
+    }
+
+    try {
+      await user.updateDisplayName(displayName);
+      await user.reload();
+      return UserModel.fromFirebaseUser(_firebaseAuth.currentUser!);
+    } on fb.FirebaseAuthException catch (e) {
+      throw Exception(_mapFirebaseError(e));
+    }
+  }
+
+  @override
   Future<void> signOut() async{
     await Future.wait([
       _firebaseAuth.signOut(),

@@ -7,10 +7,14 @@ import 'package:kivu_haqms/features/auth/presentation/cubit/auth_state.dart';
 import 'package:kivu_haqms/features/auth/presentation/pages/login_page.dart';
 import 'package:kivu_haqms/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:kivu_haqms/features/auth/presentation/pages/splash_page.dart';
-import 'package:kivu_haqms/features/doctors/presentation/pages/book_appointment_page.dart';
-import 'package:kivu_haqms/features/doctors/presentation/pages/booking_confirmation_page.dart';
+import 'package:kivu_haqms/features/appointments/domain/entities/appointment_entity.dart';
+import 'package:kivu_haqms/features/appointments/presentation/pages/book_appointment_page.dart';
+import 'package:kivu_haqms/features/appointments/presentation/pages/booking_confirmation_page.dart';
+import 'package:kivu_haqms/features/doctors/domain/entities/doctor_entity.dart';
 import 'package:kivu_haqms/features/doctors/presentation/pages/find_doctor_page.dart';
 import 'package:kivu_haqms/features/home/presentation/pages/home_page.dart';
+import 'package:kivu_haqms/features/notifications/presentation/pages/notifications_page.dart';
+import 'package:kivu_haqms/features/profile/presentation/pages/edit_profile_page.dart';
 import 'package:kivu_haqms/features/profile/presentation/pages/profile_page.dart';
 import 'package:kivu_haqms/features/schedule/presentation/pages/queue_tracker_page.dart';
 import 'package:kivu_haqms/features/schedule/presentation/pages/schedule_page.dart';
@@ -39,14 +43,14 @@ abstract final class AppRouter {
         final isSplashRoute = location == AppRoutes.splash;
         final isAuthRoute = location == AppRoutes.login || location == AppRoutes.signUp || location == AppRoutes.phoneSignin || location == AppRoutes.otpVerification;
 
-        // Still checking session — stay put.
+        // App startup — show splash while the first session check runs.
         if (authState is AuthInitial || authState is AuthLoading) {
-          if (isSplashRoute || isAuthRoute) return null;
-          return AppRoutes.splash;
+          return (isSplashRoute || isAuthRoute) ? null : AppRoutes.splash;
         }
 
         final isLoggedIn = authState is AuthAuthenticated;
 
+        // Signed out (or never signed in) — always land on login, not splash.
         if (!isLoggedIn && !isAuthRoute) {
           return AppRoutes.login;
         }
@@ -126,17 +130,33 @@ abstract final class AppRouter {
         GoRoute(
           path: AppRoutes.bookAppointment,
           parentNavigatorKey: rootNavigatorKey,
-          builder: (context, state) => const BookAppointmentPage(),
+          builder: (context, state) => BookAppointmentPage(
+            initialDoctor: state.extra as DoctorEntity?,
+          ),
         ),
         GoRoute(
           path: AppRoutes.bookingConfirmation,
           parentNavigatorKey: rootNavigatorKey,
-          builder: (context, state) => const BookingConfirmationPage(),
+          builder: (context, state) => BookingConfirmationPage(
+            appointment: state.extra as AppointmentEntity?,
+          ),
         ),
         GoRoute(
           path: AppRoutes.queueTracker,
           parentNavigatorKey: rootNavigatorKey,
-          builder: (context, state) => const QueueTrackerPage(),
+          builder: (context, state) => QueueTrackerPage(
+            appointment: state.extra as AppointmentEntity?,
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.profileEdit,
+          parentNavigatorKey: rootNavigatorKey,
+          builder: (context, state) => const EditProfilePage(),
+        ),
+        GoRoute(
+          path: AppRoutes.notifications,
+          parentNavigatorKey: rootNavigatorKey,
+          builder: (context, state) => const NotificationsPage(),
         ),
       ],
     );

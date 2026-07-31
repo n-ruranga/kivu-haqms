@@ -31,11 +31,23 @@ lib/
     │       ├── cubit/                # AuthCubit + AuthState
     │       └── pages/                # Login, OTP, Sign up
     ├── home/                         # Dashboard (Jabes)
-    ├── schedule/                     # Naillah — domain/ + data/ ready
-    ├── doctors/                      # Kethia — domain/ + data/ ready
+    ├── appointments/                 # Booking + Firestore CRUD
+    │   ├── domain/                   # AppointmentEntity, status, repo contract
+    │   ├── data/                     # FirestoreAppointmentRepository
+    │   └── presentation/
+    │       ├── cubit/                # BookingCubit, MyAppointmentsCubit, RescheduleCubit
+    │       ├── pages/                # Book appointment, confirmation
+    │       └── widgets/              # Steps, slot grid, appointment card
+    ├── doctors/                      # Kethia — department & doctor directory
+    ├── schedule/                     # Naillah — queue tracker
     ├── profile/                      # Naillah — domain/ + data/ ready
     └── shell/
 ```
+
+## Documentation
+
+- [`docs/database-design-erd.md`](docs/database-design-erd.md) — ERD, collection schemas, design decisions
+- [`docs/appointment-crud-report.md`](docs/appointment-crud-report.md) — booking flow + Firestore CRUD report
 
 ## Getting started
 
@@ -49,7 +61,9 @@ flutter run
 1. **Login** → Continue → **OTP**
 2. **Verify & Login** → `AuthCubit.completeDemoLogin()` → redirect to **Home**
 3. Tabs: Home · Schedule · Doctors · Profile
-4. **Profile → Sign out** → redirect back to Login
+4. **Home / Schedule → ＋** → **Book Appointment** (department → doctor → date → time)
+   → **Confirmation** → **Schedule**
+5. **Profile → Sign out** → redirect back to Login
 
 Auth redirects are handled in `AppRouter` — pages do not call `context.go('/home')` after login.
 

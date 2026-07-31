@@ -27,6 +27,8 @@ abstract class AuthRepository {
   //sends a password reset email.
   Future<void> sendPasswordResetEmail(String email);
 
+  Future<UserEntity> updateUserProfile({required String displayName});
+
   Future<void> signOut();
 
   //sends sms with otp

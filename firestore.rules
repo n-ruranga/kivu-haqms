@@ -1,0 +1,83 @@
+rules_version = '2';
+
+// KIVU Hospital Appointment & Queue Management System
+// See docs/database-design-erd.md section 6.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Patient profiles — a user may only touch their own document.
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Reference data. Readable by any signed-in user.
+    //
+    // Writes are open to signed-in users only so the app can seed a fresh
+    // project on first launch. Once the hospital's real directory is loaded,
+    // tighten both of these to `allow write: if false;` and manage the data
+    // from the Firebase console or the Admin SDK.
+    match /departments/{departmentId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+
+    match /doctors/{doctorId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+
+    match /appointments/{appointmentId} {
+      // Single-document reads stay private to the patient who booked.
+      allow get: if isSignedIn()
+                 && resource.data.patientId == request.auth.uid;
+
+      // List/query must be readable by any signed-in user so booking can
+      // query taken slots by doctorId + scheduledAt (getBookedSlots).
+      // Without this, Firestore denies the query with permission-denied
+      // because other patients' docs would match the filter.
+      allow list: if isSignedIn();
+
+      // New appointments must belong to the caller and start as pending.
+      allow create: if isSignedIn()
+                    && request.resource.data.patientId == request.auth.uid
+                    && request.resource.data.status == 'pending';
+
+      // Updates may not reassign the appointment to someone else.
+      allow update: if isSignedIn()
+                    && resource.data.patientId == request.auth.uid
+                    && request.resource.data.patientId == resource.data.patientId;
+
+      allow delete: if isSignedIn()
+                    && resource.data.patientId == request.auth.uid;
+    }
+
+    // Per-user notification inbox.
+    match /notifications/{notificationId} {
+      allow read: if isSignedIn()
+                  && resource.data.userId == request.auth.uid;
+
+      allow create: if isSignedIn()
+                    && request.resource.data.userId == request.auth.uid;
+
+      allow update: if isSignedIn()
+                    && resource.data.userId == request.auth.uid
+                    && request.resource.data.userId == resource.data.userId;
+
+      allow delete: if isSignedIn()
+                    && resource.data.userId == request.auth.uid;
+    }
+
+    // Anything not matched above is denied.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

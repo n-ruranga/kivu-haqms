@@ -42,12 +42,12 @@ class AuthCubit extends Cubit<AuthState> {
   /// Called after OTP / email login succeeds (stub for now).
 
   Future<void> signOut() async {
-    emit(const AuthLoading());
     try {
       await _repository.signOut();
       emit(const AuthUnauthenticated());
     } catch (e) {
       emit(AuthFailure(e.toString()));
+      emit(const AuthUnauthenticated());
     }
   }
 
