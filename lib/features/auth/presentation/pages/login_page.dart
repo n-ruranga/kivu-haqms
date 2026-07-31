@@ -190,10 +190,20 @@ class _LoginPageState extends State<LoginPage>{
                   ),
                   const SizedBox(height: 16),
 
+                  // OutlinedButton.icon(
+                  //   onPressed: () => context.read<AuthCubit>().signInWithGoogle(),
+                  //   icon: const Icon(Icons.g_mobiledata, size: 28),
+                  //   label: const Text('Continue with Google'),
+                  //   style: OutlinedButton.styleFrom(
+                  //     padding: const EdgeInsets.symmetric(vertical: 14),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 24),
+
                   OutlinedButton.icon(
-                    onPressed: () => context.read<AuthCubit>().signInWithGoogle(),
-                    icon: const Icon(Icons.g_mobiledata, size: 28),
-                    label: const Text('Continue with Google'),
+                    onPressed: () => context.push(AppRoutes.phoneSignin),
+                    icon: const Icon(Icons.phone_outlined),
+                    label: const Text('Sign in with phone'),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),

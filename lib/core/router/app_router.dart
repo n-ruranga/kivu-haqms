@@ -15,6 +15,8 @@ import 'package:kivu_haqms/features/profile/presentation/pages/profile_page.dart
 import 'package:kivu_haqms/features/schedule/presentation/pages/queue_tracker_page.dart';
 import 'package:kivu_haqms/features/schedule/presentation/pages/schedule_page.dart';
 import 'package:kivu_haqms/features/shell/presentation/pages/main_shell_page.dart';
+import 'package:kivu_haqms/features/auth/presentation/pages/otp_verification_page.dart';
+import 'package:kivu_haqms/features/auth/presentation/pages/phone_sign_in_page.dart';
 
 abstract final class AppRouter {
   static final GlobalKey<NavigatorState> rootNavigatorKey =
@@ -24,16 +26,23 @@ abstract final class AppRouter {
     return GoRouter(
       navigatorKey: rootNavigatorKey,
       initialLocation: AppRoutes.splash,
-      refreshListenable: GoRouterRefreshStream(authCubit.stream),
+      refreshListenable: GoRouterRefreshStream(
+        authCubit.stream.where(
+          (state) =>
+            state is AuthInitial || state is AuthAuthenticated || state is AuthUnauthenticated,
+        ),
+      ),
+
       redirect: (context, state) {
         final authState = authCubit.state;
         final location = state.matchedLocation;
         final isSplashRoute = location == AppRoutes.splash;
-        final isAuthRoute = location == AppRoutes.login || location == AppRoutes.signUp;
+        final isAuthRoute = location == AppRoutes.login || location == AppRoutes.signUp || location == AppRoutes.phoneSignin || location == AppRoutes.otpVerification;
 
         // Still checking session — stay put.
         if (authState is AuthInitial || authState is AuthLoading) {
-          return isSplashRoute ? null : AppRoutes.splash;
+          if (isSplashRoute || isAuthRoute) return null;
+          return AppRoutes.splash;
         }
 
         final isLoggedIn = authState is AuthAuthenticated;
@@ -64,6 +73,16 @@ abstract final class AppRouter {
         GoRoute(
           path: AppRoutes.signUp,
           builder: (context, state) => const SignUpPage(),
+        ),
+        GoRoute(
+          path: AppRoutes.phoneSignin,
+          builder: (context, state) => const PhoneSignInPage(),
+        ),
+        GoRoute(
+          path: AppRoutes.otpVerification,
+          builder: (context, state) => OtpVerificationPage(
+            verificationId: state.extra as String,
+          ),
         ),
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {

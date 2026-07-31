@@ -28,4 +28,17 @@ abstract class AuthRepository {
   Future<void> sendPasswordResetEmail(String email);
 
   Future<void> signOut();
+
+  //sends sms with otp
+  Future<void>verifyPhoneNumber({
+    required String phoneNumber,
+    required void Function(String verificationId) onCodeSent,
+    required void Function(String error) onVerificationFailed,
+  });
+
+  //complete sign-in using the code the user typed in
+  Future<UserEntity> signInWithOtp({
+    required String verificationId,
+    required String smsCode,
+  });
 }
