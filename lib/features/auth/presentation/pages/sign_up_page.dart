@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kivu_haqms/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:kivu_haqms/features/auth/presentation/cubit/auth_state.dart';
-
+import 'package:kivu_haqms/core/constants/app_routes.dart';
 class SignUpPage extends StatefulWidget{
   const SignUpPage({super.key});
 
@@ -197,9 +197,9 @@ class _SignUpPageState extends State<SignUpPage>{
                   const SizedBox(height: 16),
 
                   OutlinedButton.icon(
-                    onPressed: () => context.read<AuthCubit>().signInWithGoogle(),
-                    icon: const Icon(Icons.g_mobiledata, size: 28),
-                    label: const Text('Continue with Google'),
+                    onPressed: () => context.push(AppRoutes.phoneSignin),
+                    icon: const Icon(Icons.phone_outlined, size: 28),
+                    label: const Text('Continue with phone number'),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),

@@ -38,3 +38,12 @@ final class AuthFailure extends AuthState {
   @override
   List<Object?> get props => [message];
 }
+
+final class AuthOtpCodeSent extends AuthState{
+  const AuthOtpCodeSent(this.verificationId);
+
+  final String verificationId;
+
+  @override
+  List<Object?> get props => [verificationId];
+}

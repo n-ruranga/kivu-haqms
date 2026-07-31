@@ -138,6 +138,47 @@ class FirebaseAuthRepository implements AuthRepository{
     ]);
   }
 
+  @override
+  Future<void> verifyPhoneNumber({
+    required String phoneNumber,
+    required void Function(String verificationId) onCodeSent,
+    required void Function(String error) onVerificationFailed,
+  }) async{
+    await _firebaseAuth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      timeout: const Duration(seconds: 60),
+      verificationCompleted: (fb.PhoneAuthCredential credential) async{
+        //Android can instantly fill in the code and verify.
+        await _firebaseAuth.signInWithCredential(credential);
+      },
+      verificationFailed: (fb.FirebaseAuthException e){
+        onVerificationFailed(_mapFirebaseError(e));
+      },
+      codeSent: (String verificationId, int? resendToken){
+        onCodeSent(verificationId);
+      },
+      codeAutoRetrievalTimeout: (String verificationId){
+        //called when the auto-retrieval window closes.
+      },
+    );
+  }
+
+  @override
+  Future<UserEntity> signInWithOtp({
+    required String verificationId,
+    required String smsCode,
+  }) async{
+    try{
+      final credential = fb.PhoneAuthProvider.credential(
+        verificationId: verificationId,
+        smsCode: smsCode,
+      );
+      final userCredential = await _firebaseAuth.signInWithCredential(credential);
+      return UserModel.fromFirebaseUser(userCredential.user!);
+    } on fb.FirebaseAuthException catch (e){
+      throw Exception(_mapFirebaseError(e));
+    }
+  }
 
   String _mapFirebaseError(fb.FirebaseAuthException e){
     switch (e.code){

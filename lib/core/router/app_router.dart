@@ -19,6 +19,8 @@ import 'package:kivu_haqms/features/profile/presentation/pages/profile_page.dart
 import 'package:kivu_haqms/features/schedule/presentation/pages/queue_tracker_page.dart';
 import 'package:kivu_haqms/features/schedule/presentation/pages/schedule_page.dart';
 import 'package:kivu_haqms/features/shell/presentation/pages/main_shell_page.dart';
+import 'package:kivu_haqms/features/auth/presentation/pages/otp_verification_page.dart';
+import 'package:kivu_haqms/features/auth/presentation/pages/phone_sign_in_page.dart';
 
 abstract final class AppRouter {
   static final GlobalKey<NavigatorState> rootNavigatorKey =
@@ -28,16 +30,22 @@ abstract final class AppRouter {
     return GoRouter(
       navigatorKey: rootNavigatorKey,
       initialLocation: AppRoutes.splash,
-      refreshListenable: GoRouterRefreshStream(authCubit.stream),
+      refreshListenable: GoRouterRefreshStream(
+        authCubit.stream.where(
+          (state) =>
+            state is AuthInitial || state is AuthAuthenticated || state is AuthUnauthenticated,
+        ),
+      ),
+
       redirect: (context, state) {
         final authState = authCubit.state;
         final location = state.matchedLocation;
         final isSplashRoute = location == AppRoutes.splash;
-        final isAuthRoute = location == AppRoutes.login || location == AppRoutes.signUp;
+        final isAuthRoute = location == AppRoutes.login || location == AppRoutes.signUp || location == AppRoutes.phoneSignin || location == AppRoutes.otpVerification;
 
         // App startup — show splash while the first session check runs.
-        if (authState is AuthInitial) {
-          return isSplashRoute ? null : AppRoutes.splash;
+        if (authState is AuthInitial || authState is AuthLoading) {
+          return (isSplashRoute || isAuthRoute) ? null : AppRoutes.splash;
         }
 
         final isLoggedIn = authState is AuthAuthenticated;
@@ -69,6 +77,16 @@ abstract final class AppRouter {
         GoRoute(
           path: AppRoutes.signUp,
           builder: (context, state) => const SignUpPage(),
+        ),
+        GoRoute(
+          path: AppRoutes.phoneSignin,
+          builder: (context, state) => const PhoneSignInPage(),
+        ),
+        GoRoute(
+          path: AppRoutes.otpVerification,
+          builder: (context, state) => OtpVerificationPage(
+            verificationId: state.extra as String,
+          ),
         ),
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
@@ -112,7 +130,6 @@ abstract final class AppRouter {
         GoRoute(
           path: AppRoutes.bookAppointment,
           parentNavigatorKey: rootNavigatorKey,
-          // A doctor picked on the "Find a Doctor" tab is handed over via `extra`.
           builder: (context, state) => BookAppointmentPage(
             initialDoctor: state.extra as DoctorEntity?,
           ),
@@ -120,7 +137,6 @@ abstract final class AppRouter {
         GoRoute(
           path: AppRoutes.bookingConfirmation,
           parentNavigatorKey: rootNavigatorKey,
-          // The freshly created appointment is handed over via `extra`.
           builder: (context, state) => BookingConfirmationPage(
             appointment: state.extra as AppointmentEntity?,
           ),
@@ -128,7 +144,6 @@ abstract final class AppRouter {
         GoRoute(
           path: AppRoutes.queueTracker,
           parentNavigatorKey: rootNavigatorKey,
-          // The appointment being tracked is handed over via `extra`.
           builder: (context, state) => QueueTrackerPage(
             appointment: state.extra as AppointmentEntity?,
           ),

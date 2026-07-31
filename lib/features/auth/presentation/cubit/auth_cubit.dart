@@ -106,6 +106,39 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> sendOtp(String phoneNumber) async{
+    emit(const AuthLoading());
+    try{
+      await _repository.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        onCodeSent: (verificationId){
+          emit(AuthOtpCodeSent(verificationId));
+        },
+        onVerificationFailed: (error){
+          emit(AuthFailure(error));
+        },
+      );
+    } catch (e){
+      emit(AuthFailure(e.toString()));
+    }
+  }
+
+  Future<void> verifyOtp({
+    required String verificationId,
+    required String smsCode,
+  }) async{
+    emit(const AuthLoading());
+    try{
+      final user = await _repository.signInWithOtp(
+        verificationId: verificationId,
+        smsCode: smsCode,
+      );
+      emit(AuthAuthenticated(user));
+    } catch(e) {
+      emit(AuthFailure(e.toString()));
+    }
+  }
+
   Future<void> sendPasswordResetEmail(String email) async{
     try{
       await _repository.sendPasswordResetEmail(email);
