@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 import 'package:kivu_haqms/features/doctors/domain/entities/department_entity.dart';
 import 'package:kivu_haqms/features/doctors/presentation/widgets/department_icons.dart';
 
@@ -64,10 +65,10 @@ class _DepartmentChip extends StatelessWidget {
           width: 132,
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.primary : AppColors.surface,
+            color: isSelected ? AppColors.primary : context.cardSurface,
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
-              color: isSelected ? AppColors.primary : AppColors.border,
+              color: isSelected ? AppColors.primary : context.cardBorder,
             ),
           ),
           child: Column(
@@ -80,7 +81,7 @@ class _DepartmentChip extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? Colors.white.withValues(alpha: 0.22)
-                      : AppColors.primaryLight,
+                      : context.primaryTintBackground,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
@@ -94,7 +95,7 @@ class _DepartmentChip extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: isSelected ? Colors.white : AppColors.textPrimary,
+                      color: isSelected ? Colors.white : context.primaryText,
                     ),
               ),
             ],

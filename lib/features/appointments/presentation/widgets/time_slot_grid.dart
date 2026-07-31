@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 import 'package:kivu_haqms/core/utils/date_format.dart';
 
 /// Grid of `HH:mm` slots — step 4. Slots already booked are shown struck
@@ -62,17 +63,17 @@ class _SlotChip extends StatelessWidget {
     final Color borderColor;
 
     if (isBooked) {
-      background = AppColors.background;
-      foreground = AppColors.textMuted;
-      borderColor = AppColors.border;
+      background = Theme.of(context).scaffoldBackgroundColor;
+      foreground = context.mutedText;
+      borderColor = context.cardBorder;
     } else if (isSelected) {
       background = AppColors.primary;
       foreground = Colors.white;
       borderColor = AppColors.primary;
     } else {
-      background = AppColors.surface;
-      foreground = AppColors.textPrimary;
-      borderColor = AppColors.border;
+      background = context.cardSurface;
+      foreground = context.primaryText;
+      borderColor = context.cardBorder;
     }
 
     return Semantics(
@@ -116,16 +117,12 @@ class _EmptySlots extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 22, horizontal: 16),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
-      ),
+      decoration: context.cardDecoration(),
       child: Column(
         children: [
-          const Icon(
+          Icon(
             Icons.event_busy_outlined,
-            color: AppColors.textMuted,
+            color: context.mutedText,
             size: 26,
           ),
           const SizedBox(height: 8),

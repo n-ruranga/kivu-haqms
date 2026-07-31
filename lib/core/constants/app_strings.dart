@@ -85,6 +85,12 @@ abstract final class AppStrings {
   static const String appointmentReminders = 'Appointment reminders';
   static const String appointmentRemindersDesc =
       'Get reminded before your upcoming appointments.';
+  static const String appearance = 'Appearance';
+  static const String theme = 'Theme';
+  static const String themeDesc = 'Choose light, dark, or match your device.';
+  static const String themeLight = 'Light';
+  static const String themeDark = 'Dark';
+  static const String themeSystem = 'System default';
   static const String resetPassword = 'Reset password';
   static const String resetPasswordDesc =
       'Send a password reset link to your email.';

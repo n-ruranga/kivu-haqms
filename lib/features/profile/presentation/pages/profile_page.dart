@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
 import 'package:kivu_haqms/core/constants/app_routes.dart';
 import 'package:kivu_haqms/core/constants/app_strings.dart';
+import 'package:kivu_haqms/core/theme/theme_cubit.dart';
+import 'package:kivu_haqms/core/theme/theme_state.dart';
 import 'package:kivu_haqms/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:kivu_haqms/features/auth/presentation/cubit/auth_state.dart';
 import 'package:kivu_haqms/features/profile/domain/entities/profile_entity.dart';
@@ -36,7 +38,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: SafeArea(
         child: BlocConsumer<ProfileCubit, ProfileState>(
           listener: (context, state) {
@@ -78,6 +79,7 @@ class _ProfileContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dateFormat = MaterialLocalizations.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -117,7 +119,7 @@ class _ProfileContent extends StatelessWidget {
                   Text(
                     profile.email!,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textSecondary,
+                          color: colorScheme.onSurfaceVariant,
                         ),
                     textAlign: TextAlign.center,
                   ),
@@ -139,7 +141,7 @@ class _ProfileContent extends StatelessWidget {
                   label: AppStrings.phoneNumber,
                   value: profile.phoneNumber ?? AppStrings.notProvided,
                 ),
-                const Divider(height: 1, color: AppColors.border),
+                Divider(height: 1, color: colorScheme.outlineVariant),
                 ProfileInfoRow(
                   icon: Icons.cake_outlined,
                   label: AppStrings.dateOfBirth,
@@ -147,7 +149,7 @@ class _ProfileContent extends StatelessWidget {
                       ? dateFormat.formatMediumDate(profile.dateOfBirth!)
                       : AppStrings.notProvided,
                 ),
-                const Divider(height: 1, color: AppColors.border),
+                Divider(height: 1, color: colorScheme.outlineVariant),
                 ProfileInfoRow(
                   icon: Icons.contact_emergency_outlined,
                   label: AppStrings.emergencyContact,
@@ -171,7 +173,7 @@ class _ProfileContent extends StatelessWidget {
                   subtitle: Text(
                     AppStrings.pushNotificationsDesc,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
+                          color: colorScheme.onSurfaceVariant,
                         ),
                   ),
                   value: profile.pushNotificationsEnabled,
@@ -185,14 +187,14 @@ class _ProfileContent extends StatelessWidget {
                             enabled: value,
                           ),
                 ),
-                const Divider(height: 1, color: AppColors.border),
+                Divider(height: 1, color: colorScheme.outlineVariant),
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
                   title: Text(AppStrings.appointmentReminders),
                   subtitle: Text(
                     AppStrings.appointmentRemindersDesc,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
+                          color: colorScheme.onSurfaceVariant,
                         ),
                   ),
                   value: profile.appointmentRemindersEnabled,
@@ -211,6 +213,46 @@ class _ProfileContent extends StatelessWidget {
           ),
           const SizedBox(height: 28),
           Text(
+            AppStrings.appearance,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: 8),
+          _ProfileCard(
+            child: BlocBuilder<ThemeCubit, ThemeState>(
+              builder: (context, themeState) {
+                return ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.palette_outlined),
+                  title: const Text(AppStrings.theme),
+                  subtitle: Text(
+                    AppStrings.themeDesc,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        _themeModeLabel(themeState.themeMode),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                            ),
+                      ),
+                      const SizedBox(width: 4),
+                      Icon(
+                        Icons.chevron_right,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ],
+                  ),
+                  onTap: () => _showThemePicker(context, themeState.themeMode),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 28),
+          Text(
             AppStrings.account,
             style: Theme.of(context).textTheme.titleMedium,
           ),
@@ -225,14 +267,14 @@ class _ProfileContent extends StatelessWidget {
                   subtitle: Text(
                     AppStrings.resetPasswordDesc,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
+                          color: colorScheme.onSurfaceVariant,
                         ),
                   ),
                   onTap: profile.email == null
                       ? null
                       : () => _sendPasswordReset(context, profile.email!),
                 ),
-                const Divider(height: 1, color: AppColors.border),
+                Divider(height: 1, color: colorScheme.outlineVariant),
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: const Icon(Icons.logout, color: AppColors.error),
@@ -271,6 +313,59 @@ class _ProfileContent extends StatelessWidget {
       SnackBar(content: Text(AppStrings.resetPasswordSent(email))),
     );
   }
+
+  String _themeModeLabel(ThemeMode mode) {
+    return switch (mode) {
+      ThemeMode.light => AppStrings.themeLight,
+      ThemeMode.dark => AppStrings.themeDark,
+      ThemeMode.system => AppStrings.themeSystem,
+    };
+  }
+
+  Future<void> _showThemePicker(BuildContext context, ThemeMode current) async {
+    final options = <(ThemeMode, String)>[
+      (ThemeMode.light, AppStrings.themeLight),
+      (ThemeMode.dark, AppStrings.themeDark),
+      (ThemeMode.system, AppStrings.themeSystem),
+    ];
+
+    final selected = await showModalBottomSheet<ThemeMode>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    AppStrings.theme,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+              ),
+              for (final (mode, label) in options)
+                ListTile(
+                  title: Text(label),
+                  trailing: current == mode
+                      ? const Icon(Icons.check, color: AppColors.primary)
+                      : null,
+                  onTap: () => Navigator.pop(context, mode),
+                ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (selected != null && context.mounted) {
+      await context.read<ThemeCubit>().setThemeMode(selected);
+    }
+  }
 }
 
 class _ProfileCard extends StatelessWidget {
@@ -280,12 +375,15 @@ class _ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final dividerColor = Theme.of(context).dividerColor;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: dividerColor),
       ),
       child: child,
     );

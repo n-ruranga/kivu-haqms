@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kivu_haqms/core/constants/app_colors.dart';
+import 'package:kivu_haqms/core/theme/theme_colors.dart';
 import 'package:kivu_haqms/features/doctors/domain/entities/doctor_entity.dart';
 
 /// A doctor row on the "Find a Doctor" directory — tapping it starts a
@@ -24,18 +25,14 @@ class DoctorListTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         child: Container(
           padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.border),
-          ),
+          decoration: context.cardDecoration(),
           child: Row(
             children: [
               Container(
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: AppColors.primaryLight,
+                  color: context.primaryTintBackground,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Center(
@@ -77,17 +74,17 @@ class DoctorListTile extends StatelessWidget {
                         const SizedBox(width: 3),
                         Text(
                           doctor.rating.toStringAsFixed(1),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.textPrimary,
+                            color: context.primaryText,
                           ),
                         ),
                         const SizedBox(width: 10),
-                        const Icon(
+                        Icon(
                           Icons.location_on_outlined,
                           size: 14,
-                          color: AppColors.textSecondary,
+                          color: context.mutedText,
                         ),
                         const SizedBox(width: 3),
                         Expanded(
@@ -95,9 +92,9 @@ class DoctorListTile extends StatelessWidget {
                             doctor.hospital,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
-                              color: AppColors.textSecondary,
+                              color: context.mutedText,
                             ),
                           ),
                         ),
@@ -106,9 +103,9 @@ class DoctorListTile extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(
+              Icon(
                 Icons.chevron_right_rounded,
-                color: AppColors.textMuted,
+                color: context.mutedText,
               ),
             ],
           ),
